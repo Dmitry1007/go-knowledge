@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func sumV(xi ...int) int {
+func totalV(xi ...int) int {
 	var sum int
 	for _, v := range xi {
 		sum += v
@@ -12,7 +12,7 @@ func sumV(xi ...int) int {
 	return sum
 }
 
-func sum(i []int) int {
+func total(i []int) int {
 	var sum int
 	for _, v := range i {
 		sum += v
@@ -29,14 +29,40 @@ func d() {
 	fmt.Println(3)
 }
 
+// person is what it says it is bro
+type person struct {
+	first string
+	last  string
+	age   int
+}
+
+func (p person) speak() string {
+	s := fmt.Sprintf(
+		"My name is %v %v and I am %v years of age",
+		p.first,
+		p.last,
+		p.age,
+	)
+	return s
+}
+
 func main() {
 	xi := []int{1, 2, 3, 4}
-	sv := sumV(xi...)
-	fmt.Println(sv)
+	tv := totalV(xi...)
+	fmt.Println(tv)
 
 	i := []int{3, 4, 5}
-	s := sum(i)
-	fmt.Println(s)
+	t := total(i)
+	fmt.Println(t)
 
 	d()
+
+	p := person{
+		first: "Shaq",
+		last:  "Oneil",
+		age:   42,
+	}
+	fmt.Println(p)
+	sp := p.speak()
+	fmt.Println(sp)
 }
