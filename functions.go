@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func foo(xi ...int) int {
+func sumV(xi ...int) int {
 	var sum int
 	for _, v := range xi {
 		sum += v
@@ -12,7 +12,7 @@ func foo(xi ...int) int {
 	return sum
 }
 
-func bar(i []int) int {
+func sum(i []int) int {
 	var sum int
 	for _, v := range i {
 		sum += v
@@ -20,12 +20,23 @@ func bar(i []int) int {
 	return sum
 }
 
+func d() {
+	defer func() {
+		fmt.Println("I'm so deffered in this func")
+	}()
+	fmt.Println(1)
+	fmt.Println(2)
+	fmt.Println(3)
+}
+
 func main() {
 	xi := []int{1, 2, 3, 4}
-	f := foo(xi...)
-	fmt.Println(f)
+	sv := sumV(xi...)
+	fmt.Println(sv)
 
 	i := []int{3, 4, 5}
-	b := bar(i)
-	fmt.Println(b)
+	s := sum(i)
+	fmt.Println(s)
+
+	d()
 }
