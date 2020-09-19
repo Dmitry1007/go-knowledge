@@ -1,10 +1,11 @@
 package main
 
 import (
+	"crypto/sha256"
 	"fmt"
 )
 
-func merk(s []string) {
+func makeTree(s []string) []string {
 	fmt.Println("Level 0 ", s)
 	var level1 []string
 	for i, v := range s {
@@ -29,9 +30,30 @@ func merk(s []string) {
 		}
 	}
 	fmt.Println("Level 3 ", level3)
+
+	return level3
+}
+
+func hashPuppy(s []string) []string {
+	var hashedValues []string
+	for _, v := range s {
+		h := sha256.New()
+		h.Write([]byte(v))
+		hashed := fmt.Sprintf("%x", h.Sum(nil))
+		hashedValues = append(hashedValues, hashed)
+	}
+	return hashedValues
 }
 
 func main() {
 	txs := []string{"a", "b", "c", "d", "e", "f", "g", "h"}
-	merk(txs)
+	makeTree(txs)
+
+	hashed := hashPuppy(txs)
+	fmt.Println(hashed)
+
+	h := sha256.New()
+	h.Write([]byte(txs[0]))
+	hashy := fmt.Sprintf("\n%x", h.Sum(nil))
+	fmt.Println(hashy)
 }
