@@ -34,15 +34,18 @@ func createBlock(data string, prevHash []byte) Block {
 	return block
 }
 
-func (chain *Blockchain) addBlock(data string) Block {
-	prevHash := chain.Blocks[len(chain.Blocks)-1].Hash
-	newBlock := createBlock(data, prevHash)
+func (chain *Blockchain) addBlock(data string) {
+	prevBlock := chain.Blocks[len(chain.Blocks)-1]
+	newBlock := createBlock(data, prevBlock.Hash)
 	chain.Blocks = append(chain.Blocks, newBlock)
-	return newBlock
+}
+
+func genesis() Block {
+	return createBlock("Genesis", []byte{})
 }
 
 func initBlockchain() Blockchain {
-	genesis := createBlock("Genesis", []byte{})
+	genesis := genesis()
 	return Blockchain{Blocks: []Block{genesis}}
 
 }
