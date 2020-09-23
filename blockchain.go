@@ -23,28 +23,28 @@ func (b *Block) deriveHash() {
 	b.Hash = hashed[:]
 }
 
-func createBlock(data string) Block {
+func createBlock(data string, prevHash []byte) Block {
 	block := Block{
 		Hash:     []byte{},
 		Data:     []byte(data),
-		prevHash: []byte{},
+		prevHash: prevHash,
 	}
 	block.deriveHash()
 
 	return block
 }
 
-func initBlockchain() Blockchain {
-	genesis := createBlock("Genesis")
-	return Blockchain{Blocks: []Block{genesis}}
-
-}
-
 func (chain *Blockchain) addBlock(data string) Block {
-	newBlock := createBlock("data")
-	newBlock.prevHash = chain.Blocks[len(chain.Blocks)-1].Hash
+	prevHash := chain.Blocks[len(chain.Blocks)-1].Hash
+	newBlock := createBlock(data, prevHash)
 	chain.Blocks = append(chain.Blocks, newBlock)
 	return newBlock
+}
+
+func initBlockchain() Blockchain {
+	genesis := createBlock("Genesis", []byte{})
+	return Blockchain{Blocks: []Block{genesis}}
+
 }
 
 func main() {
