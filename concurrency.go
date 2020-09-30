@@ -21,6 +21,27 @@ func main() {
 	fmt.Println("CPUs\t", runtime.NumCPU())
 	fmt.Println("Goroutines\t", runtime.NumGoroutine())
 	wg.Wait()
+
+	fmt.Println("--------------------------------------------------------")
+	fmt.Println("CPUs:", runtime.NumCPU())
+	fmt.Println("Goroutines:", runtime.NumGoroutine())
+
+	var counter int
+
+	gs := 100
+	wg.Add(gs)
+	for i := 0; i < gs; i++ {
+		go func() {
+			v := counter
+			runtime.Gosched()
+			v++
+			counter = v
+			wg.Done()
+		}()
+		fmt.Println("Goroutines:", runtime.NumGoroutine())
+	}
+	wg.Wait()
+	fmt.Println("Counter:", counter)
 }
 
 func foo() {
