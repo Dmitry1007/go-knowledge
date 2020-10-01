@@ -24,21 +24,24 @@ func main() {
 
 	fmt.Println("--------------------------------------------------------")
 	fmt.Println("CPUs:", runtime.NumCPU())
-	fmt.Println("Goroutines:", runtime.NumGoroutine())
+	fmt.Println("Package.Main Goroutines:", runtime.NumGoroutine())
 
 	var counter int
-
 	gs := 100
 	wg.Add(gs)
+
+	var mu sync.Mutex
 	for i := 0; i < gs; i++ {
 		go func() {
+			mu.Lock()
 			v := counter
 			runtime.Gosched()
 			v++
 			counter = v
+			mu.Unlock()
 			wg.Done()
 		}()
-		fmt.Println("Goroutines:", runtime.NumGoroutine())
+		fmt.Println("Inside For Loop Goroutines:", runtime.NumGoroutine())
 	}
 	wg.Wait()
 	fmt.Println("Counter:", counter)
