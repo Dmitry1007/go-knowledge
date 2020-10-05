@@ -2,6 +2,14 @@ package main
 
 import "fmt"
 
+func sendChan(c chan<- int, val int) {
+	c <- val
+}
+
+func receiveChan(c <-chan int) {
+	fmt.Println("receiveChannel", <-c)
+}
+
 func main() {
 	// Unbuffered bidirectional channel
 	c1 := make(chan int)
@@ -29,13 +37,23 @@ func main() {
 
 	c5 := make(chan int)
 	go sendChan(c5, 45)
+	// receiveChan will block until sendChan does its thang
 	receiveChan(c5)
-}
 
-func sendChan(c chan<- int, val int) {
-	c <- val
-}
+	c6 := make(chan int)
+	// send
+	go func() {
+		for i := 0; i <= 10; i++ {
+			fmt.Println("in here yall")
+			c6 <- i
+		}
+		close(c6)
+	}()
 
-func receiveChan(c <-chan int) {
-	fmt.Println("receiveChannel", <-c)
+	// receive
+	for v := range c6 {
+		fmt.Println(v)
+	}
+
+	fmt.Println("Bout To Exit")
 }
