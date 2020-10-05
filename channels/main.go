@@ -26,4 +26,16 @@ func main() {
 	// receive only channel
 	c4 := make(<-chan int)
 	fmt.Printf("c4 is of Type %T \n", c4)
+
+	c5 := make(chan int)
+	go sendChan(c5, 45)
+	receiveChan(c5)
+}
+
+func sendChan(c chan<- int, val int) {
+	c <- val
+}
+
+func receiveChan(c <-chan int) {
+	fmt.Println("receiveChannel", <-c)
 }
