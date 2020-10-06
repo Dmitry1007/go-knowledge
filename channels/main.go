@@ -9,13 +9,19 @@ func main() {
 		c1 <- 42
 		c1 <- 43
 	}()
-	fmt.Println(<-c1, <-c1)
+	// fmt.Println(<-c1, <-c1)
+	// Using a comma ok idom
+	v, ok := <-c1
+	fmt.Println("Using a comma ok idiom", v, ok)
+	close(c1)
+	v, ok = <-c1
+	fmt.Println("Using a comma ok idiom", v, ok)
 
 	// Buffered bidirectional channel
 	// 1 is the buffer, meaning you can only place one value in the channel
 	c2 := make(chan int, 1)
 	c2 <- 57
-	fmt.Println(<-c2)
+	fmt.Println("Plucked from buffered channel", <-c2)
 	fmt.Printf("c2 is of Type %T \n", c2)
 
 	// Directional channels
